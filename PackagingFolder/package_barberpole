@@ -1,0 +1,11 @@
+#!/bin/sh
+cd /boot/home/projects/barberpole/PackagingFolder
+package create -b barberpole_0.1-1_gcc2.hpkg
+sleep 0.5
+package add barberpole_0.1-1_gcc2.hpkg data documentation bin
+sleep 0.5
+addattr BeShare:Info "Display a spinning barberpole with a message" barberpole_0.1-1_gcc2.hpkg
+becopy barberpole_0.1-1_gcc2.hpkg "/Storage/Haiku/My ports"
+mv barberpole_0.1-1_gcc2.hpkg /boot/home/projects/repo
+
+sync

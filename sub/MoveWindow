@@ -1,0 +1,68 @@
+sub MoveWindow(whereto$)
+	local movetox,movetoy,tempvarx, tempvary
+	tempvarx=window get "MainWindow", "position-x"
+	tempvary=window get "MainWindow", "position-y"
+	switch whereto$
+		case "topleft"
+			movetox=0
+			movetoy=0
+			break
+		case "topright"
+			movetox=desktopx - width
+			movetoy=o
+			break
+		case "bottomleft"
+			movetox=0
+			movetoy=desktopy - height
+			break
+		case "bottomright"
+			movetox=desktopx - width
+			movetoy=desktopy - height
+			break
+		case "up"
+			movetox=tempvarx
+			if tempvary - 50 < 0 then
+				movetoy=0
+			else
+				movetoy=tempvary - 50
+			endif
+			break
+		case "down"
+			movetox=tempvarx
+			if tempvary+50 > desktopy - height then
+				movetoy=desktopy - height
+			else
+				movetoy=tempvary + 50
+			endif
+			break
+		case "left"
+			if tempvarx - 50 < 0 then
+				movetox=0
+			else
+				movetox=tempvarx - 50
+			endif
+			movetoy=tempvary
+			break
+		case "right"
+			if tempvarx + 50 > desktopx then
+				movetox=desktopx - width
+			else
+				movetox = tempvarx + 50
+			endif
+			movetoy=tempvary
+			break
+		case "centre"
+			FindCentre()
+			movetox=xstart
+			movetoy=ystart
+		case "alert"
+			FindCentre()
+			movetox=xstart
+			movetoy = int(desktopy/4 - height)
+			break
+		default
+			break
+	end switch
+	window set "MainWindow", "moveto", movetox, movetoy
+end sub
+

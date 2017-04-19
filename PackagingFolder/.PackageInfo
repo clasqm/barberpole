@@ -1,0 +1,39 @@
+name				barberpole
+version				0.1-1
+architecture			x86_gcc2
+
+
+summary			"Display a spinning barberpole with a message"
+Description			"This CLI utility displays a spinning barberpole with a message (default: 'Please wait ...') while your script or program is doing something that may take a long, but unknown, time.
+
+When you no longer want to display the barberpole, you can remove it in two ways:
+
+ hey barberpole quit
+ kill barberpole
+
+barberpole uses bbjimmy's spinner library.
+
+v0.1
+- Display barberpole in any of six predetermined locations.
+- Customize message
+- Reverse direction of spin
+
+barberpole also has special facilities for yab programmers, who can do all this and more on-the-fly. Please see the documentation for details.
+
+To-do:
+- allow change of colour
+"
+
+packager		"Michel Clasquin-Johnson <clasqm@gmail.com>"
+vendor			"clasqm"
+copyrights		"2016Michel Clasquin-Johnson <clasqm@gmail.com>"
+licenses			"Public Domain"
+provides {
+				barberpole = 0.1-1
+}
+requires {
+				yab>=1.7.5.3
+}
+URLs {
+				http://clasquin-johnson.co.za/michel/haiku
+}

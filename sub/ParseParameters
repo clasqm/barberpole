@@ -1,0 +1,14 @@
+sub ParseParameters()
+	local position
+//	param$ already established in ShowHelp()
+	if param$ ="" return //no need to check if no parameters were supplied
+	if instr(param$, "--tl") <> 0 or instr(param$, "--topleft") <> 0 MoveWindow("topleft")
+	if instr(param$, "--tr") <> 0 or instr(param$, "--topright") <> 0 MoveWindow("topright")
+	if instr(param$, "--bl") <> 0 or instr(param$, "--bottomleft") <> 0 MoveWindow("bottomleft")
+	if instr(param$, "--br") <> 0 or instr(param$, "--bottomright") <> 0 MoveWindow("bottomright")
+	if instr(param$, "--al") <> 0 or instr(param$, "--alert") <> 0 MoveWindow("alert")
+	if instr(param$, "--rv") <> 0 or instr(param$, "--reverse") <> 0 spinner_set(1, "Barber")
+	position = instr(param$, "--msg=")
+	if  position <> 0 displaymessage$ = mid$(param$,  position +6)
+end sub
+

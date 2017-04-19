@@ -1,0 +1,67 @@
+
+//Yabadabbadoo notification
+########DO NOT RENAME THIS FILE!########
+//Yabadabbadoo needs it to function.
+
+//Main Message Loop
+dim msg$(1)
+while(not leavingLoop)
+	nCommands = token(message$, msg$(), "|")
+	for everyCommand = 1 to nCommands
+		if(DEBUG and msg$(everyCommand)<>"") print msg$(everyCommand)
+		switch(msg$(everyCommand))
+			case "_QuitRequested"
+			case "hidden_window:_QuitRequested"
+			case "_Scripting:done"
+			case "_Scripting:exit"
+			case "_Scripting:quit"
+				CloseWindow()
+				break
+			case "_Scripting:about"
+				Alert ProgramName$ + " " + ProgramVersion$ + "\n" + "by " + AuthorName$ +"\n\n" + ProgramBriefDescription$ + "\n" + ProgramLicense$ + "\n" + ProgramAcknowledgements$, "OK", "none"
+				break
+			case "_Scripting:up50"
+				MoveWindow("up")
+				break
+			case "_Scripting:down50"
+				MoveWindow("down")
+				break
+			case "_Scripting:left50"
+				MoveWindow("left")
+				break
+			case "_Scripting:right50"
+				MoveWindow("right")
+				break
+			case "_Scripting:topleft"
+				MoveWindow("topleft")
+				break
+			case "_Scripting:topright"
+				MoveWindow("topright")
+				break
+			case "_Scripting:bottomleft"
+				MoveWindow("bottomleft")
+				break
+			case "_Scripting:bottomright"
+				MoveWindow("bottomright")
+				break
+			case "_Scripting:center"
+			case "_Scripting:centre"
+				MoveWindow("centre")
+				break
+			case "_Scripting:alert"
+				MoveWindow("alert")
+				break
+			case "_Scripting:reverse"
+				spinner_set(1, "Barber")
+				break
+			default
+				break
+		end switch
+		if left$(msg$(everyCommand), 18) = "_Scripting:newmsg:" then
+			displaymessage$ = mid$(msg$(everyCommand),19)
+			WriteMessage()
+		endif
+		next everyCommand
+	spin("Barber")
+wend
+

@@ -1,0 +1,20 @@
+sub ShowHelp()
+	local help$
+	param$= peek$("refsreceived")
+	//This should never actually happen, but luck favours the well-prepared
+	if param$ ="" then
+		while(peek("argument")) 
+  			param$ = param$ + peek$("argument") + " "
+		wend 
+	endif
+	if instr(param$, "--h") <> 0 or instr(param$, "--help") <> 0 or instr(param$, "-h") <> 0 or instr(param$, "-help") <> 0 then
+	restore helpdata
+	read help$
+	while(help$ <> "end_of_data")
+		print help$
+		read help$
+	wend
+	end
+	endif
+end sub
+

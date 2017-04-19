@@ -1,0 +1,309 @@
+#!/bin/env yab
+################################
+############# Prologue #############
+################################
+
+//Yabadabbadoo notification
+########DO NOT RENAME THIS FILE!########
+//Yabadabbadoo needs it to function.
+ 
+##Fill in these fields with your own particulars.
+##The variables will be used in the About Box and in naming the program.
+ 
+ProgramName$ = "barberpole"
+AuthorName$ = "Michel Clasquin-Johnson"
+ProgramVersion$ = "V0.1"
+ProgramBriefDescription$ = "Displays a spinning barberpole with a message"
+ProgramLicense$ = "Public Domain"
+ProgramAcknowledgements$ ="With thanks to bbjimmy for his spinner library code"
+ 
+//*************************
+//*****Global Variables****
+//*************************
+ 
+## Technically, yab does not require you to declare global variables,
+##It just is a really, really good idea to do it anyway.
+// set DEBUG = 1 to print out all messages on the console
+DEBUG = 0
+//change this to DEBUG = 0 when you are ready to bind the program for distribution
+displaymessage$ = "Please Wait ..." 
+xstart=100
+ystart=100
+width =400
+height=54
+desktopx=1024
+desktopy=768
+param$=""
+ 
+##########################
+######Preliminary Commands#####
+##########################
+
+## Commands to run before the Main Loop come here.
+## e.g. setting up a window with a menu.
+ 
+import spinner 
+
+ShowHelp()
+FindCentre() 
+OpenWindow()
+ParseParameters()
+WriteMessage()
+ 
+#######End of Prologue#######
+
+
+//Yabadabbadoo notification
+########DO NOT RENAME THIS FILE!########
+//Yabadabbadoo needs it to function.
+
+//Main Message Loop
+dim msg$(1)
+while(not leavingLoop)
+	nCommands = token(message$, msg$(), "|")
+	for everyCommand = 1 to nCommands
+		if(DEBUG and msg$(everyCommand)<>"") print msg$(everyCommand)
+		switch(msg$(everyCommand))
+			case "_QuitRequested"
+			case "hidden_window:_QuitRequested"
+			case "_Scripting:done"
+			case "_Scripting:exit"
+			case "_Scripting:quit"
+				CloseWindow()
+				break
+			case "_Scripting:about"
+				Alert ProgramName$ + " " + ProgramVersion$ + "\n" + "by " + AuthorName$ +"\n\n" + ProgramBriefDescription$ + "\n" + ProgramLicense$ + "\n" + ProgramAcknowledgements$, "OK", "none"
+				break
+			case "_Scripting:up50"
+				MoveWindow("up")
+				break
+			case "_Scripting:down50"
+				MoveWindow("down")
+				break
+			case "_Scripting:left50"
+				MoveWindow("left")
+				break
+			case "_Scripting:right50"
+				MoveWindow("right")
+				break
+			case "_Scripting:topleft"
+				MoveWindow("topleft")
+				break
+			case "_Scripting:topright"
+				MoveWindow("topright")
+				break
+			case "_Scripting:bottomleft"
+				MoveWindow("bottomleft")
+				break
+			case "_Scripting:bottomright"
+				MoveWindow("bottomright")
+				break
+			case "_Scripting:center"
+			case "_Scripting:centre"
+				MoveWindow("centre")
+				break
+			case "_Scripting:alert"
+				MoveWindow("alert")
+				break
+			case "_Scripting:reverse"
+				spinner_set(1, "Barber")
+				break
+			default
+				break
+		end switch
+		if left$(msg$(everyCommand), 18) = "_Scripting:newmsg:" then
+			displaymessage$ = mid$(msg$(everyCommand),19)
+			WriteMessage()
+		endif
+		next everyCommand
+	spin("Barber")
+wend
+
+sub CloseWindow()
+	//Close down the main window
+	//window close "MainWindow" //strangely, this gives an error when bound or compiled
+	                                              //but just shut down. There's no data to lose
+	end
+end sub
+
+sub FindCentre()
+	desktopx =PEEK("DesktopWidth"):if DEBUG print desktopx
+	xstart = int(desktopx/2 - width/2):if DEBUG print xstart
+	desktopy =PEEK("DesktopHeight"):if DEBUG print desktopy
+	ystart =int(desktopy/2 - height/2):if DEBUG print ystart
+end sub
+
+sub MoveWindow(whereto$)
+	local movetox,movetoy,tempvarx, tempvary
+	tempvarx=window get "MainWindow", "position-x"
+	tempvary=window get "MainWindow", "position-y"
+	switch whereto$
+		case "topleft"
+			movetox=0
+			movetoy=0
+			break
+		case "topright"
+			movetox=desktopx - width
+			movetoy=o
+			break
+		case "bottomleft"
+			movetox=0
+			movetoy=desktopy - height
+			break
+		case "bottomright"
+			movetox=desktopx - width
+			movetoy=desktopy - height
+			break
+		case "up"
+			movetox=tempvarx
+			if tempvary - 50 < 0 then
+				movetoy=0
+			else
+				movetoy=tempvary - 50
+			endif
+			break
+		case "down"
+			movetox=tempvarx
+			if tempvary+50 > desktopy - height then
+				movetoy=desktopy - height
+			else
+				movetoy=tempvary + 50
+			endif
+			break
+		case "left"
+			if tempvarx - 50 < 0 then
+				movetox=0
+			else
+				movetox=tempvarx - 50
+			endif
+			movetoy=tempvary
+			break
+		case "right"
+			if tempvarx + 50 > desktopx then
+				movetox=desktopx - width
+			else
+				movetox = tempvarx + 50
+			endif
+			movetoy=tempvary
+			break
+		case "centre"
+			FindCentre()
+			movetox=xstart
+			movetoy=ystart
+		case "alert"
+			FindCentre()
+			movetox=xstart
+			movetoy = int(desktopy/4 - height)
+			break
+		default
+			break
+	end switch
+	window set "MainWindow", "moveto", movetox, movetoy
+end sub
+
+sub OpenWindow()
+	//Setup the main window here
+	window open xstart,ystart to xstart+width,ystart +height, "MainWindow", "barberpole"
+	window set "MainWindow", "look", "bordered"
+//     window set "MainWindow", "feel", "floating-app"
+	view 1,3 to 400,28, "SpinView", "MainWindow"
+	new_spinner(1,1,25,397, "Barber", "SpinView")
+	display_spinner("Barber")
+end sub
+
+sub ParseParameters()
+	local position
+//	param$ already established in ShowHelp()
+	if param$ ="" return //no need to check if no parameters were supplied
+	if instr(param$, "--tl") <> 0 or instr(param$, "--topleft") <> 0 MoveWindow("topleft")
+	if instr(param$, "--tr") <> 0 or instr(param$, "--topright") <> 0 MoveWindow("topright")
+	if instr(param$, "--bl") <> 0 or instr(param$, "--bottomleft") <> 0 MoveWindow("bottomleft")
+	if instr(param$, "--br") <> 0 or instr(param$, "--bottomright") <> 0 MoveWindow("bottomright")
+	if instr(param$, "--al") <> 0 or instr(param$, "--alert") <> 0 MoveWindow("alert")
+	if instr(param$, "--rv") <> 0 or instr(param$, "--reverse") <> 0 spinner_set(1, "Barber")
+	position = instr(param$, "--msg=")
+	if  position <> 0 displaymessage$ = mid$(param$,  position +6)
+end sub
+
+sub ShowHelp()
+	local help$
+	param$= peek$("refsreceived")
+	//This should never actually happen, but luck favours the well-prepared
+	if param$ ="" then
+		while(peek("argument")) 
+  			param$ = param$ + peek$("argument") + " "
+		wend 
+	endif
+	if instr(param$, "--h") <> 0 or instr(param$, "--help") <> 0 or instr(param$, "-h") <> 0 or instr(param$, "-help") <> 0 then
+	restore helpdata
+	read help$
+	while(help$ <> "end_of_data")
+		print help$
+		read help$
+	wend
+	end
+	endif
+end sub
+
+sub WriteMessage()
+	if view get "MsgView", "exists" view remove "MsgView"
+	view 3,31 to 397,50, "MsgView", "MainWindow"
+	text 1,4 to 394, 19,"themessage", displaymessage$, "MsgView"
+	text set "themessage", "align-center" 
+end sub
+
+label helpdata
+
+data "barberpole v.0.1"
+data "by Michel Clasquin-Johnson"
+data "Public Domain software"
+data " "
+data "Displays a barberpole with an explanatory message."
+data " "
+data "This application uses the spinner library developed by Jim Saxton"
+data "(bbjimmy)"
+data " "
+data "Usage: barberpole <parameters> <--msg=message>"
+data " "
+data "PARAMETERS"
+data "=========="
+data "All parameters are case-sensitive and must be entered in lowercase."
+data "POSTIONING"
+data "By default, the barberpole displays in the exact centre of the screen."
+data "To change that, use the following parameters:"
+data "    --tl    --topleft       Display in top left corner"
+data "    --tr    --topright      Display in top right corner"
+data "    --bl    --bottomleft    Display in bottom left corner"
+data "    --br    --bottomright   Display in bottom right corner"
+data "    --al    --alert         Display  a position ¾ from the bottom of the"
+data "                            screen, roughly where Haiku posts alerts."
+data "OTHER PARAMETERS"
+data "    --rv    --reverse       Reverse direction of barberpole's movement."
+data "    --h     --help          Display this help"
+data "    --msg=Text of the explanatory message"
+data "        Default: Please Wait ..."
+data "        This MUST be the last parameter. No spaces around the =."
+data "        Everything that comes after \"--msg=\" will be displayed."
+data "        You do not need to surround this text with quotes. In fact,"
+data "        if you need to display either a single or a double quote you"
+data "        will need to escape them (see the documentation). If your"
+data "        text is too long, it will simply be truncated at BOTH ends."
+data "        Your message cannot include the text of any other parameter."
+data "        For example, the hypothetical command"
+data "        barberpole --msg=Wait--for--the--transition!"
+data "        will be displayed in the top right position because it "
+data "        contains \"--tr\""
+data ""
+data "When you no longer want to display the barberpole, remove it in two ways:"
+data "    hey barberpole quit"
+data "    kill barberpole"
+data " "
+data "EXAMPLES"
+data "========"
+data "barberpole --msg=This should display in the centre of your screen."
+data " "
+data " "
+data "barberpole also has special facilities for yab programmers. Please"
+data "see the documentation for details."
+data "end_of_data"
+

@@ -1,0 +1,10 @@
+sub OpenWindow()
+	//Setup the main window here
+	window open xstart,ystart to xstart+width,ystart +height, "MainWindow", "barberpole"
+	window set "MainWindow", "look", "bordered"
+//     window set "MainWindow", "feel", "floating-app"
+	view 1,3 to 400,28, "SpinView", "MainWindow"
+	new_spinner(1,1,25,397, "Barber", "SpinView")
+	display_spinner("Barber")
+end sub
+

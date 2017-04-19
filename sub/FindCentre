@@ -1,0 +1,7 @@
+sub FindCentre()
+	desktopx =PEEK("DesktopWidth"):if DEBUG print desktopx
+	xstart = int(desktopx/2 - width/2):if DEBUG print xstart
+	desktopy =PEEK("DesktopHeight"):if DEBUG print desktopy
+	ystart =int(desktopy/2 - height/2):if DEBUG print ystart
+end sub
+

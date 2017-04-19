@@ -1,0 +1,7 @@
+sub CloseWindow()
+	//Close down the main window
+	//window close "MainWindow" //strangely, this gives an error when bound or compiled
+	                                              //but just shut down. There's no data to lose
+	end
+end sub
+

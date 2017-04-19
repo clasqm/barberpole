@@ -1,0 +1,7 @@
+sub WriteMessage()
+	if view get "MsgView", "exists" view remove "MsgView"
+	view 3,31 to 397,50, "MsgView", "MainWindow"
+	text 1,4 to 394, 19,"themessage", displaymessage$, "MsgView"
+	text set "themessage", "align-center" 
+end sub
+
