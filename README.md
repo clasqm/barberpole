@@ -1,5 +1,6 @@
-barberpole v.0.1
+# barberpole v.0.1
 by Michel Clasquin-Johnson
+
 Displays a barberpole with an explanatory message.
 
 This application uses the spinner library developed by Jim Saxton (bbjimmy)
@@ -95,3 +96,9 @@ FAQ:
 
 Q: What happens if two apps call barberpole simultaneously and my yab app tries to modify one of them?
 A: barberpole is set up as a single-instance app to avoid this situation. The second app that tries to call up a barberpole will get an error and do nothing.
+
+Get it here: https://github.com/clasqm/barberpole
+
+Binaries: https://sourceforge.net/p/barberpole/
+
+
