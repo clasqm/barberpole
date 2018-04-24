@@ -3,6 +3,8 @@ by Michel Clasquin-Johnson
 
 Displays a barberpole with an explanatory message.
 
+![barberpole](barberpole.png)
+
 This application uses the spinner library developed by Jim Saxton (bbjimmy)
 
 SECTION 1: For use in bash or any language that can shell out to bash:
