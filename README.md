@@ -1,7 +1,8 @@
 # barberpole v.0.1
+
 by Michel Clasquin-Johnson
 
-Displays a barberpole with an explanatory message.
+Displays a barberpole widget with an explanatory message.
 
 ![barberpole](barberpole.png)
 
